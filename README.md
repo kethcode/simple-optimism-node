@@ -58,12 +58,6 @@ docker compose down
 docker compose down -v
 ```
 
-### Logs
-
-```sh
-docker compose logs <service name (see docker-compose.yml)>
-```
-
 ## What's Included
 
 ### Optimism Node
@@ -101,7 +95,8 @@ Navigate over to `Dashboards > Manage > Simple Node Dashboard` to see the dashbo
 
 ![metrics dashboard gif](https://user-images.githubusercontent.com/14298799/171476634-0cb84efd-adbf-4732-9c1d-d737915e1fa7.gif)
 
-## Detailed Installation Instructions
+## Detailed Instructions
+
 
 These instructions assume a debian linux platform, but aside from the package installation, this translates fairly directly.
 
