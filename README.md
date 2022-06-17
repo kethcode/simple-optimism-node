@@ -1,5 +1,7 @@
 # Simple Optimism Node
 
+(this is a fork; the majority of the work was done by kelvin at optimism. my contribution is the Detailed Instructions section)
+
 I think it's really important that people start running their own Optimism nodes.
 I've created this repository to make that process as simple as possible.
 You should be relatively familiar with running commands on your machine.
