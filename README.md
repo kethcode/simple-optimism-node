@@ -1,6 +1,6 @@
 # Simple Optimism Node
 
-(this is a fork; the majority of the work was done by [kelvin](https://github.com/smartcontracts/simple-optimism-node). my contribution is the [#Detailed-Instructions](https://github.com/kethcode/simple-optimism-node/edit/main/README.md#detailed-instructions))
+(this is a fork; the majority of the work was done by [kelvin](https://github.com/smartcontracts/simple-optimism-node). my contribution is the [#Detailed-Instructions](https://github.com/kethcode/simple-optimism-node/main/README.md#detailed-instructions))
 
 I think it's really important that people start running their own Optimism nodes.
 I've created this repository to make that process as simple as possible.
