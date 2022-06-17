@@ -234,7 +234,7 @@ docker compose up -d
 
 ![image](https://user-images.githubusercontent.com/94415863/171553460-837c3763-24e5-4025-a1af-d06415771beb.png)
 
-And you can hop over to the graphana dashboard to see it start to sync up.
+And you can hop over to the grafana dashboard to see it start to sync up.
 
 [http://localhost:3000/dashboards](http://localhost:3000/dashboards)
 
