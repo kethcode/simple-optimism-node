@@ -17,6 +17,13 @@ Let's do it!
 - 500GB+ disk (HDD works for now, SSD is better)
 - 10mb/s+ download
 
+## Approximate Disk Usage
+
+Usage as of 2022-09-21:
+
+- Archive node: ~800gb
+- Full node: ~60gb
+
 ## Installation and Setup Instructions
 
 Instructions here should work for MacOS and most Linux distributions.
@@ -53,10 +60,12 @@ Only the following variables are required:
 
 | Variable Name                           | Description                                                               |
 |-----------------------------------------|---------------------------------------------------------------------------|
-| `NETWORK_NAME`                          | Network to run the node on ("mainnet" or "kovan")                         |
-| `HEALTHCHECK__REFERENCE_RPC_PROVIDER`   | Another reference L2 node to check blocks against, just in case           |
+| `NETWORK_NAME`                          | Network to run the node on ("mainnet" or "goerli")                            |
+| `NODE_TYPE`                             | Type of node to run ("full" or "archive")                                      |
+| `SYNC_SOURCE`                           | Where to sync data from ("l1" or "l2")                                        |
+| `HEALTHCHECK__REFERENCE_RPC_PROVIDER`   | Another reference L2 node to check blocks against, just in case              |
 | `FAULT_DETECTOR__L1_RPC_PROVIDER`       | L1 node RPC to check state roots against                                  |
-| `DATA_TRANSPORT_LAYER__L1_RPC_ENDPOINT` | L1 node RPC to download L2 blocks from (can be the same as the one above) |
+| `DATA_TRANSPORT_LAYER__RPC_ENDPOINT`    | Node to get chain data from, must be an L1 node if `SYNC_SOURCE` is "l1" and vice versa for L2 |
 
 You can get L1/L2 RPC endpoints from [these node providers](https://community.optimism.io/docs/useful-tools/providers/).
 
@@ -72,6 +81,19 @@ If you'd like your Docker data to live on a disk other than your primary disk, c
 {
     "data-root": "/mnt/<disk>/docker_data"
 }
+```
+
+Make sure to restart docker after you do this or the changes won't apply:
+
+```sh
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
+
+Confirm that the changes were properly applied:
+
+```sh
+docker info | grep -i "Docker Root Dir"
 ```
 
 ### Operating the Node
@@ -145,15 +167,20 @@ Many people are running nodes that sync from other L2 nodes, but I'd like to inc
 As a result, I've set this repository up to sync from L1 by default.
 I may later add the option to sync from L2 but I need to go do other things for a while.
 
-### Healthcheck + Fault Detector
+### Healthcheck
 
 When you run your Optimism node using these instructions, you will also be running two services that monitor the health of your node and the health of the network.
 The Healthcheck service will constantly compare the state computed by your node to the state of some other reference node.
 This is a great way to confirm that your node is syncing correctly.
 
+### Fault Detector
+
 The Fault Detector service will continuously scan the transaction results published by the Optimism Sequencer and cross-check them against the transaction results that your node generated locally.
-If there's ever a discrepancy between these two values, please complain very loudly!
+**If there's ever a discrepancy between these two values, please complain very loudly!**
+This either means that the Sequencer has published an invalid transaction result or there's a bug in your node software and an Optimism developer needs to know about it.
 In the future, this service will trigger Cannon, the fault proving mechanism that Optimism is building as part of its Bedrock upgrade.
+
+The Fault Detector exposes several metrics that can be used to determine whether your node has detected a discrepancy including the `is_currently_diverged` gauge. The Fault Detector also exposes a simple API at `localhost:$PORT__FAULT_DETECTOR_METRICS/api/status` which returns `{ ok: boolean }`. You can use this API to monitor the status of the Fault Detector from another application.
 
 ### Metrics Dashboard
 
